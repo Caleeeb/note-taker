@@ -3,8 +3,16 @@ const notes = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 let noteData = require('../db/db.json');
+const uuid = require('../helpers/uuid');
 
-// GET route to display data from db.
+console.log(uuid());
+
+// Below, I tried using the uuid npm but my verion of node couldn't handle the ES6 module syntax. I tried to add to the package.json but then node couldn't read other js files.
+// // import uuid from npm package
+// import { v4 as uuidv4 } from 'uuid';
+// let myuuid = uuidv4();
+
+// GET route to retrieve data from db.
 notes.get('/notes', (req, res) => {
     console.log(`${req.method} request for notes recieved.`);
 
@@ -28,7 +36,11 @@ notes.post('/notes', (req, res) => {
 
     // TODO: unique id for each note????
     if (title && text) {
-        const newNote = { title, text };
+        const newNote = {
+            title,
+            text,
+            id: uuid(),
+        };
 
         noteData.push(newNote);
 
@@ -50,6 +62,18 @@ notes.post('/notes', (req, res) => {
     }
 });
 
+// GET route for specific note
+notes.get('/notes/:id', (req, res) => {
+    const noteId = req.params.id;
+
+    console.log(`${req} request for notes has been received`);
+    let result = noteData.filter((note) => note.id === noteId);
+    res.json(result);
+});
+
+
 // DELETE route if I have time.
+
+
 
 module.exports = notes;
