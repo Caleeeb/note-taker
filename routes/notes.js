@@ -5,8 +5,6 @@ const path = require('path');
 let noteData = require('../db/db.json');
 const uuid = require('../helpers/uuid');
 
-console.log(uuid());
-
 // Below, I tried using the uuid npm but my verion of node couldn't handle the ES6 module syntax. I tried to add to the package.json but then node couldn't read other js files.
 // // import uuid from npm package
 // import { v4 as uuidv4 } from 'uuid';
@@ -73,7 +71,28 @@ notes.get('/notes/:id', (req, res) => {
 
 
 // DELETE route if I have time.
+notes.delete('/notes/:id', (req, res) => {
+    const noteId = req.params.id;
 
+    if (noteId) {
+        console.log(noteId);
+        console.log(noteData);
+        let deleteNoteId = noteData.filter((note) => note.id !== noteId);
+        console.log(noteData);
+        const allNotes = JSON.stringify(deleteNoteId, null, 2);
+        console.log(allNotes);
+        fs.writeFile(path.join(__dirname, '../db/db.json'), allNotes, (err) => {
+            if (err) {
+                console.error(err);
+                res.json(err);
+            }
+            else {
+                console.log(`Note id number ${noteId} has been deleted.`);
+                res.json(deleteNoteId);
+            }
+        });
+    }
+});
 
 
 module.exports = notes;
