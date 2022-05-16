@@ -22,13 +22,13 @@
 
 This is a simple note taking application.
 
-video of how to use:
+check it out live:
 
-
+[Note Taker application link!](https://notetaker1234567.herokuapp.com/)
 
 Visuals:
 
-
+<img src="./public/assets/images/note-taker-example.PNG">
 
 <p style='text-align: right;'><a href='#title'>Back to top</a></p>
 
